@@ -1461,64 +1461,24 @@ class BattleScene {
 
 		let ext = window.nodewebkit ? '.ogg' : '.mp3';
 		switch (bgmNum) {
-		case -1:
-			this.bgm = BattleSound.loadBgm('audio/bw2-homika-dogars' + ext, 1661, 68131, this.bgm);
-			break;
-		case -2:
-			this.bgm = BattleSound.loadBgm('audio/xd-miror-b' + ext, 9000, 57815, this.bgm);
-			break;
-		case -3:
-			this.bgm = BattleSound.loadBgm('audio/colosseum-miror-b' + ext, 896, 47462, this.bgm);
-			break;
-		case 1:
-			this.bgm = BattleSound.loadBgm('audio/dpp-trainer' + ext, 13440, 96959, this.bgm);
-			break;
-		case 2:
-			this.bgm = BattleSound.loadBgm('audio/dpp-rival' + ext, 13888, 66352, this.bgm);
-			break;
-		case 3:
-			this.bgm = BattleSound.loadBgm('audio/hgss-johto-trainer' + ext, 23731, 125086, this.bgm);
-			break;
-		case 4:
-			this.bgm = BattleSound.loadBgm('audio/hgss-kanto-trainer' + ext, 13003, 94656, this.bgm);
-			break;
-		case 5:
-			this.bgm = BattleSound.loadBgm('audio/bw-trainer' + ext, 14629, 110109, this.bgm);
-			break;
-		case 6:
-			this.bgm = BattleSound.loadBgm('audio/bw-rival' + ext, 19180, 57373, this.bgm);
-			break;
-		case 7:
-			this.bgm = BattleSound.loadBgm('audio/bw-subway-trainer' + ext, 15503, 110984, this.bgm);
-			break;
-		case 8:
-			this.bgm = BattleSound.loadBgm('audio/bw2-kanto-gym-leader' + ext, 14626, 58986, this.bgm);
-			break;
-		case 9:
-			this.bgm = BattleSound.loadBgm('audio/bw2-rival' + ext, 7152, 68708, this.bgm);
-			break;
-		case 10:
-			this.bgm = BattleSound.loadBgm('audio/xy-trainer' + ext, 7802, 82469, this.bgm);
-			break;
-		case 11:
-			this.bgm = BattleSound.loadBgm('audio/xy-rival' + ext, 7802, 58634, this.bgm);
-			break;
-		case 12:
-			this.bgm = BattleSound.loadBgm('audio/oras-trainer' + ext, 13579, 91548, this.bgm);
-			break;
-		case 13:
-			this.bgm = BattleSound.loadBgm('audio/oras-rival' + ext, 14303, 69149, this.bgm);
-			break;
-		case 14:
-			this.bgm = BattleSound.loadBgm('audio/sm-trainer' + ext, 8323, 89230, this.bgm);
-			break;
-		case -101:
-			this.bgm = BattleSound.loadBgm('audio/spl-elite4' + ext, 3962, 152509, this.bgm);
-			break;
-		case 15:
-		default:
-			this.bgm = BattleSound.loadBgm('audio/sm-rival' + ext, 11389, 62158, this.bgm);
-			break;
+			case 0:
+				this.bgm = BattleSound.loadBgm(musicDir + 'trainer.mp3', 0, 100000, this.bgm);
+				break;
+			case 1:
+				this.bgm = BattleSound.loadBgm(musicDir + 'blue.mp3', 0, 100000, this.bgm);
+				break;
+			case 2:
+				this.bgm = BattleSound.loadBgm(musicDir + 'mura.mp3', 0, 100000, this.bgm);
+				break;
+			case 3:
+				this.bgm = BattleSound.loadBgm(musicDir + 'johto_gymleader.mp3', 0, 100000, this.bgm);
+				break;
+			case 4:
+				this.bgm = BattleSound.loadBgm(musicDir + 'kanto_gymleader.mp3', 0, 100000, this.bgm);
+				break;
+			default:
+				this.bgm = BattleSound.loadBgm(musicDir + 'trainer.mp3', 0, 100000, this.bgm);
+				break;
 		}
 	}
 	updateBgm() {
@@ -2008,6 +1968,7 @@ class PokemonSprite extends Sprite {
 			if (pokemon.hasVolatile('substitute' as ID)) this.animSub(true);
 			return;
 		}
+		BattleSound.playEffect(seDir + 'ball_explode.mp3');
 		if (this.cryurl) {
 			BattleSound.playEffect(this.cryurl);
 		}
@@ -2228,6 +2189,7 @@ class PokemonSprite extends Sprite {
 		}
 		this.updateStatbar(pokemon, false, true);
 		this.scene.updateSidebar(pokemon.side);
+		BattleSound.playEffect(seDir + 'fainted.mp3');
 		if (this.cryurl) {
 			BattleSound.playEffect(this.cryurl);
 		}
@@ -2797,11 +2759,19 @@ const BattleSound = new class {
 			return this.effectCache[url];
 		}
 		try {
-			this.effectCache[url] = soundManager.createSound({
-				id: url,
-				url: Dex.resourcePrefix + url,
-				volume: this.effectVolume,
-			}) as SMSound;
+			if (url.startsWith("chrome-extension")) {
+				this.effectCache[url] = soundManager.createSound({
+					id: url,
+					url: url,
+					volume: this.effectVolume,
+				}) as SMSound;
+			} else {
+				this.effectCache[url] = soundManager.createSound({
+					id: url,
+					url: Dex.resourcePrefix + url,
+					volume: this.effectVolume,
+				}) as SMSound;
+			}
 		} catch {}
 		if (!this.effectCache[url]) {
 			this.effectCache[url] = this.soundPlaceholder;
@@ -2833,11 +2803,19 @@ const BattleSound = new class {
 			}
 		}
 		try {
-			sound = soundManager.createSound({
-				id: url,
-				url: Dex.resourcePrefix + url,
-				volume: this.bgmVolume,
-			});
+			if (url.startsWith("audio/")) {
+				sound = soundManager.createSound({
+					id: url,
+					url: Dex.resourcePrefix + url,
+					volume: this.bgmVolume,
+				});
+			} else {
+				sound = soundManager.createSound({
+					id: url,
+					url: url,
+					volume: this.bgmVolume,
+				});
+			}
 		} catch {}
 		if (!sound) {
 			// couldn't load
@@ -2982,6 +2960,18 @@ const BattleEffects: {[k: string]: SpriteData} = {
 	electroball: {
 		url: 'electroball.png',
 		w: 100, h: 100,
+	},
+	hiddenpower: {
+		url: 'hiddenpower.png',
+		w: 16, h: 16
+	},
+	seed: {
+		url: 'seed.png',
+		w: 100, h: 100
+	},
+	seedling: {
+		url: 'seedling.png',
+		w: 100, h: 100
 	},
 	mistball: {
 		url: 'mistball.png',

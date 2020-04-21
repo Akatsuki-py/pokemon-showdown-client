@@ -4279,7 +4279,7 @@ const BattleMoveAnims: AnimTable = {
 			let yf2 = [0, 1, 0, -1];
 
 			for (let i = 0; i < 4; i++) {
-				scene.showEffect('electroball', {
+				scene.showEffect('hiddenpower', {
 					x: attacker.x,
 					y: attacker.y,
 					z: attacker.z,
@@ -4293,7 +4293,7 @@ const BattleMoveAnims: AnimTable = {
 					opacity: 0.5,
 					time: 800,
 				}, 'accel', 'fade');
-				scene.showEffect('electroball', {
+				scene.showEffect('hiddenpower', {
 					x: attacker.x,
 					y: attacker.y,
 					z: attacker.z,
