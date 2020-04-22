@@ -3443,6 +3443,14 @@ class Battle {
 		this.scene.pause();
 	}
 	play() {
+		const GameStart = 18;
+		if (this.activityStep == GameStart) {
+			for (let i = 0; i < 10; i++) {
+				this.scene.backgroundEffect(`url('${introDir}ball1.png')`, 50, 1.0);
+				this.scene.backgroundEffect(`url('${introDir}ball2.png')`, 50, 1.0);
+				this.scene.backgroundEffect(`url('${introDir}ball0.png')`, 100, 1.0);
+			}
+		}
 		this.paused = false;
 		this.playbackState = Playback.Playing;
 		this.scene.resume();

@@ -9,6 +9,7 @@ class BattleSceneStub {
 	messagebarOpen: boolean = false;
 	log: BattleLog = {add: (args: Args, kwargs?: KWArgs) => {}} as any;
 
+	backgroundEffect(bg: string, duration: number, opacity = 1, delay = 0) {}
 	abilityActivateAnim(pokemon: Pokemon, result: string): void { }
 	addPokemonSprite(pokemon: Pokemon) { return null!; }
 	addSideCondition(siden: number, id: ID, instant?: boolean | undefined): void { }
