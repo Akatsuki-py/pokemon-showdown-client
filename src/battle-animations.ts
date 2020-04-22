@@ -532,11 +532,35 @@ class BattleScene {
 
 	runOtherAnim(moveid: ID, participants: Pokemon[]) {
 		if (!this.animating) return;
+
+		switch (moveid) {
+			case 'leech':
+				BattleSound.playEffect(seDir + 'status_ailment/' + 'LeechSeedDamage.mp3');
+				break;
+			default:
+				break;
+		}
+
 		BattleOtherAnims[moveid].anim(this, participants.map(p => p.sprite));
 	}
 
 	runStatusAnim(moveid: ID, participants: Pokemon[]) {
 		if (!this.animating) return;
+
+		switch (moveid) {
+			case 'psn':
+				BattleSound.playEffect(seDir + 'status_ailment/' + 'Poisoned.mp3');
+				break;
+			case 'brn':
+				BattleSound.playEffect(seDir + 'status_ailment/' + 'BurnDamage.mp3');
+				break;
+			case 'confused':
+				BattleSound.playEffect(seDir + 'status_ailment/' + 'Confused.mp3');
+				break;
+			default:
+				break;
+		}
+
 		BattleStatusAnims[moveid].anim(this, participants.map(p => p.sprite));
 	}
 
@@ -1270,6 +1294,15 @@ class BattleScene {
 	}
 	resultAnim(pokemon: Pokemon, result: string, type: 'bad' | 'good' | 'neutral' | StatusName) {
 		if (!this.animating) return;
+
+		switch (result) {
+			case "Asleep":
+				BattleSound.playEffect(seDir + 'status_ailment/' + 'Sleeping.mp3');
+				break;
+			default:
+				break;
+		}
+
 		let $effect = $('<div class="result ' + type + 'result"><strong>' + result + '</strong></div>');
 		this.$fx.append($effect);
 		$effect.delay(this.timeOffset).css({
