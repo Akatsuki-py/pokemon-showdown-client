@@ -1559,7 +1559,7 @@ class Battle {
 					break;
 				}
 			} else {
-				BattleSound.playEffect(seDir + "hit.mp3");
+				BattleSound.playEffect('se/' + "hit.mp3");
 				let damageinfo = '' + Pokemon.getFormattedRange(range, damage[1] === 100 ? 0 : 1, '\u2013');
 				if (damage[1] !== 100) {
 					let hover = '' + ((damage[0] < 0) ? '\u2212' : '') +
@@ -1800,7 +1800,7 @@ class Battle {
 		}
 		case '-supereffective': {
 			let poke = this.getPokemon(args[1]);
-			BattleSound.playEffect(seDir + "super_effective.mp3");
+			BattleSound.playEffect('se/' + "super_effective.mp3");
 			if (poke) {
 				this.scene.resultAnim(poke, 'Super-effective', 'bad');
 				if (window.Config?.server?.afd) {
@@ -1813,7 +1813,7 @@ class Battle {
 		}
 		case '-resisted': {
 			let poke = this.getPokemon(args[1]);
-			BattleSound.playEffect(seDir + "not_very_effective.mp3");
+			BattleSound.playEffect('se/' + "not_very_effective.mp3");
 			if (poke) this.scene.resultAnim(poke, 'Resisted', 'neutral');
 			if (this.activeMoveIsSpread) kwArgs.spread = '.';
 			this.log(args, kwArgs);
@@ -3444,6 +3444,7 @@ class Battle {
 	}
 	play() {
 		const GameStart = 18;
+		const introDir = "https://play.pokemonshowdown.com/fx/";
 		if (this.activityStep == GameStart) {
 			for (let i = 0; i < 10; i++) {
 				this.scene.backgroundEffect(`url('${introDir}ball1.png')`, 50, 1.0);
